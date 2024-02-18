@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    val size = productImageList.size
-                    productImageList.clear()
-                    productImageAdapter.notifyItemRangeRemoved(0, size)
+//                    val size = productImageList.size
+//                    productImageList.clear()
+//                    productImageAdapter.notifyItemRangeRemoved(0, size)
                     retrieveProductImages(productList[position])
                 }
 
@@ -60,10 +60,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        amb.productImagesRv.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = productImageAdapter
-        }
+//        amb.productImagesRv.apply {
+//            layoutManager = LinearLayoutManager(this@MainActivity)
+//            adapter = productImageAdapter
+//        }
 
         retrieveProducts()
     }
@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity() {
         ImageRequest(
             product.url,
             { response ->
-                productImageList.add(response)
-                productImageAdapter.notifyItemInserted(productImageList.lastIndex)
+                amb.productImageIv.setImageBitmap(response)
             },
             0,
             0,
@@ -100,8 +99,7 @@ class MainActivity : AppCompatActivity() {
         ImageRequest(
             product.thumbnailUrl,
             { response ->
-                productImageList.add(response)
-                productImageAdapter.notifyItemInserted(productImageList.lastIndex)
+                amb.productThumbnailIv.setImageBitmap(response)
             },
             0,
             0,

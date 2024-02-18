@@ -3,4 +3,5 @@
     <string name="request_problem">Request problem</string>
     <string name="connection_failed">Connection failed</string>
     <string name="response_problem">Response problem</string>
+    <string name="product_image">Product Image</string>
 </resources>

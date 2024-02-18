@@ -7,10 +7,8 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.scl.sdm.photos.R
 import br.edu.ifsp.scl.sdm.photos.adapter.ProductAdapter
-import br.edu.ifsp.scl.sdm.photos.adapter.ProductImageAdapter
 import br.edu.ifsp.scl.sdm.photos.databinding.ActivityMainBinding
 import br.edu.ifsp.scl.sdm.photos.model.JSONPlaceholder
 import br.edu.ifsp.scl.sdm.photos.model.Product
@@ -24,11 +22,6 @@ class MainActivity : AppCompatActivity() {
     private val productList: MutableList<Product> = mutableListOf()
     private val productAdapter: ProductAdapter by lazy {
         ProductAdapter(this, productList)
-    }
-
-    private val productImageList: MutableList<Bitmap> = mutableListOf()
-    private val productImageAdapter: ProductImageAdapter by lazy {
-        ProductImageAdapter(this, productImageList)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +41,6 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-//                    val size = productImageList.size
-//                    productImageList.clear()
-//                    productImageAdapter.notifyItemRangeRemoved(0, size)
                     retrieveProductImages(productList[position])
                 }
 
@@ -59,11 +49,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        amb.productImagesRv.apply {
-//            layoutManager = LinearLayoutManager(this@MainActivity)
-//            adapter = productImageAdapter
-//        }
 
         retrieveProducts()
     }
@@ -80,38 +65,26 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun retrieveProductImages(product: Product) {
-        ImageRequest(
-            product.url,
-            { response ->
-                amb.productImageIv.setImageBitmap(response)
-            },
-            0,
-            0,
-            ImageView.ScaleType.CENTER,
-            Bitmap.Config.ARGB_8888,
-            {
-                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
-                    .show()
-            }
-        ).also {
-            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
-        }
-        ImageRequest(
-            product.thumbnailUrl,
-            { response ->
-                amb.productThumbnailIv.setImageBitmap(response)
-            },
-            0,
-            0,
-            ImageView.ScaleType.CENTER,
-            Bitmap.Config.ARGB_8888,
-            {
-                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
-                    .show()
-            }
-        ).also {
-            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
-        }
+        imageRequest(product.url, amb.productImageIv)
+        imageRequest(product.thumbnailUrl, amb.productThumbnailIv)
+    }
 
+    private fun imageRequest(url: String, imageView: ImageView) {
+        ImageRequest(
+            url,
+            { response ->
+                imageView.setImageBitmap(response)
+            },
+            0,
+            0,
+            ImageView.ScaleType.CENTER,
+            Bitmap.Config.ARGB_8888,
+            {
+                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        ).also {
+            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
+        }
     }
 }

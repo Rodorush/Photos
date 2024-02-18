@@ -9,21 +9,19 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import java.net.HttpURLConnection
 import java.net.HttpURLConnection.HTTP_NOT_MODIFIED
 import java.net.HttpURLConnection.HTTP_OK
-import javax.xml.transform.ErrorListener
 
-class DummyJSONAPI(context: Context) {
+class JSONPlaceholder(context: Context) {
     companion object {
 
-        const val PRODUCTS_ENDPOINT = "https://dummyjson.com/products/"
+        const val PRODUCTS_ENDPOINT = "https://jsonplaceholder.typicode.com/photos"
 
         @Volatile
-        private var INSTANCE: DummyJSONAPI? = null
+        private var INSTANCE: JSONPlaceholder? = null
 
         fun getInstance(context: Context) = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: DummyJSONAPI(context).also {
+            INSTANCE ?: JSONPlaceholder(context).also {
                 INSTANCE = it
             }
         }

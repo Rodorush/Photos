@@ -12,7 +12,7 @@ import br.edu.ifsp.scl.sdm.photos.R
 import br.edu.ifsp.scl.sdm.photos.adapter.ProductAdapter
 import br.edu.ifsp.scl.sdm.photos.adapter.ProductImageAdapter
 import br.edu.ifsp.scl.sdm.photos.databinding.ActivityMainBinding
-import br.edu.ifsp.scl.sdm.photos.model.DummyJSONAPI
+import br.edu.ifsp.scl.sdm.photos.model.JSONPlaceholder
 import br.edu.ifsp.scl.sdm.photos.model.Product
 import com.android.volley.toolbox.ImageRequest
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                     val size = productImageList.size
                     productImageList.clear()
                     productImageAdapter.notifyItemRangeRemoved(0, size)
-                    retrieveProductImages(productList[position])
+//                    retrieveProductImages(productList[position])
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -69,34 +69,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun retrieveProducts() =
-        DummyJSONAPI.ProductListRequest({productList ->
-            productList.products.also {
+        JSONPlaceholder.ProductListRequest({ productList ->
+            productList.also {
                 productAdapter.addAll(it)
             }
         }, {
             Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT).show()
         }).also {
-            DummyJSONAPI.getInstance(this).addToRequestQueue(it)
+            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
         }
 
-    private fun retrieveProductImages(product: Product) =
-        product.images.forEach { imageUrl ->
-            ImageRequest(
-                imageUrl,
-                { response ->
-                    productImageList.add(response)
-                    productImageAdapter.notifyItemInserted(productImageList.lastIndex)
-                },
-                0,
-                0,
-                ImageView.ScaleType.CENTER,
-                Bitmap.Config.ARGB_8888,
-                {
-                    Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
-                        .show()
-                }
-            ).also {
-                DummyJSONAPI.getInstance(this).addToRequestQueue(it)
-            }
-        }
+//    private fun retrieveProductImages(product: Product) =
+//        product.images.forEach { imageUrl ->
+//            ImageRequest(
+//                imageUrl,
+//                { response ->
+//                    productImageList.add(response)
+//                    productImageAdapter.notifyItemInserted(productImageList.lastIndex)
+//                },
+//                0,
+//                0,
+//                ImageView.ScaleType.CENTER,
+//                Bitmap.Config.ARGB_8888,
+//                {
+//                    Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
+//                        .show()
+//                }
+//            ).also {
+//                JSONPlaceholder.getInstance(this).addToRequestQueue(it)
+//            }
+//        }
 }

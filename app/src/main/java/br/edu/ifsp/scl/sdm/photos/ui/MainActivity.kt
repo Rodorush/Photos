@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                     val size = productImageList.size
                     productImageList.clear()
                     productImageAdapter.notifyItemRangeRemoved(0, size)
-//                    retrieveProductImages(productList[position])
+                    retrieveProductImages(productList[position])
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -79,24 +79,41 @@ class MainActivity : AppCompatActivity() {
             JSONPlaceholder.getInstance(this).addToRequestQueue(it)
         }
 
-//    private fun retrieveProductImages(product: Product) =
-//        product.images.forEach { imageUrl ->
-//            ImageRequest(
-//                imageUrl,
-//                { response ->
-//                    productImageList.add(response)
-//                    productImageAdapter.notifyItemInserted(productImageList.lastIndex)
-//                },
-//                0,
-//                0,
-//                ImageView.ScaleType.CENTER,
-//                Bitmap.Config.ARGB_8888,
-//                {
-//                    Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            ).also {
-//                JSONPlaceholder.getInstance(this).addToRequestQueue(it)
-//            }
-//        }
+    private fun retrieveProductImages(product: Product) {
+        ImageRequest(
+            product.url,
+            { response ->
+                productImageList.add(response)
+                productImageAdapter.notifyItemInserted(productImageList.lastIndex)
+            },
+            0,
+            0,
+            ImageView.ScaleType.CENTER,
+            Bitmap.Config.ARGB_8888,
+            {
+                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        ).also {
+            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
+        }
+        ImageRequest(
+            product.thumbnailUrl,
+            { response ->
+                productImageList.add(response)
+                productImageAdapter.notifyItemInserted(productImageList.lastIndex)
+            },
+            0,
+            0,
+            ImageView.ScaleType.CENTER,
+            Bitmap.Config.ARGB_8888,
+            {
+                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        ).also {
+            JSONPlaceholder.getInstance(this).addToRequestQueue(it)
+        }
+
+    }
 }
